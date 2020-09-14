@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <Title>Sign Up</Title>
+</head>
+<style>
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .options-form {
+        display: flex;
+        justify-content: flex-end;
+    }
+</style>
+
+<body>
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link h4" href="#">EventsManager <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Log Out</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="row main-container mt-5">
+    <div class="col-12 col-md-2">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">My Events</a>
+        </li>
+        <li class="nav-item">
+          <hr>
+          <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Schedule Event</a>
+        </li>
+        <li class="nav-item">
+          <hr>
+          <a class="nav-link" href="addUserModal" tabindex="-1" aria-disabled="true" data-toggle="modal"
+             data-target="#addUserModal">Add User</a>
+        </li>
+        <li class="nav-item">
+          <hr>
+          <a class="nav-link" href="addDepartmentModal" tabindex="-1" aria-disabled="true"
+             data-toggle="modal" data-target="#addDepartmentModal">Add Department</a>
+        </li>
+        <li class="nav-item">
+          <hr>
+          <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">All Events</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-md-10 ">
+
+      <div class="card">
+        <div class="card-header" style="width: 100%">
+          <div>
+            <h5 class="card-title">Event title</h5>
+          </div>
+          <div class="text-primary">Mandatory</div>
+        </div>
+        <div class="card-body">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <p class="card-text text-muted">Venue: <span class="text-body">#venueOfEvent</span></p>
+          <div class="row">
+            <p class="text-muted col-12 col-md-3">Date: <span class="text-body">#dateOfEvent</span></p>
+            <p class="text-muted col-12 col-md-3">Time: <span class="text-body">#timeOfEvent</span></p>
+            <p class="text-muted col-12 col-md-6">No of Attendees: <span
+                class="text-body">#noOfAttendees</span></p>
+          </div>
+          <hr>
+          <form class="form-inline options-form">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="customRadioInline1" name="customRadioInline1"
+                     class="custom-control-input">
+              <label class="custom-control-label" for="customRadioInline1">Accept</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="customRadioInline2" name="customRadioInline1"
+                     class="custom-control-input">
+              <label class="custom-control-label" for="customRadioInline2">Decline</label>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!--Add User Modal -->
+  <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="exampleModalLabel0" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel0">Add User</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form class="modal-body" action="#" th:action="@{/auth/add_user}" th:object="${user}" method="POST">
+          <div class="row">
+            <div class="col-6 form-group">
+              <input type="email" required name="email" class="form-control" placeholder="Email">
+            </div>
+            <div class="col-6 form-group">
+              <input type="text" required name="role" class="form-control" placeholder="Role">
+            </div>
+
+            <div class="col-12 form-group input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Department</label>
+              </div>
+              <select class="custom-select" id="inputGroupSelect01">
+                <option selected>Choose...</option>
+                <option value="1">Manangement</option>
+                <option value="2">Programs</option>
+                <option value="3">Project</option>
+                <option value="1">Android</option>
+                <option value="2">Java</option>
+                <option value="3">Node</option>
+                <option value="1">Python</option>
+                <option value="2">C#</option>
+                <option value="3">IOS</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success btn-block">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!--Add Department Modal -->
+  <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Add Department</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form class="modal-body" action="#" method="POST">
+
+          <div class="col-12 form-group">
+            <input type="text" required name="department-name" class="form-control"
+                   placeholder="Department Name">
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success btn-block">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
