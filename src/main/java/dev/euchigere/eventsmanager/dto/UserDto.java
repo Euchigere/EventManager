@@ -1,21 +1,15 @@
-package dev.euchigere.eventsmanager.models;
+package dev.euchigere.eventsmanager.dto;
 
-import lombok.AllArgsConstructor;
+import dev.euchigere.eventsmanager.models.Department;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@Component
+public class UserDto {
     private Long id;
-    private Integer rank=0;
+    private Integer rank;
     private String firstName;
     private String lastName;
     private String role;
@@ -23,9 +17,10 @@ public class User {
     private String contact;
     private String email;
     private LocalDate dob;
-    private String password;
 
-    @ManyToOne
+    private String message;
+    private boolean status;
+
     private Department department;
 
     public void setDob(String dob) {

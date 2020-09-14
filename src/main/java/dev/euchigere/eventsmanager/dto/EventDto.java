@@ -1,21 +1,15 @@
-package dev.euchigere.eventsmanager.models;
+package dev.euchigere.eventsmanager.dto;
 
-import lombok.AllArgsConstructor;
+import dev.euchigere.eventsmanager.models.Department;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class Event {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+@Component
+public class EventDto {
     private Long id;
     private String title;
     private String description;
@@ -23,8 +17,10 @@ public class Event {
     private LocalDate date;
     private LocalTime time;
     private String attendanceType;
-    private Long noOfAttendees = 0l;
+    private Long noOfAttendees;
 
-    @ManyToMany
+    private String message;
+    private boolean status;
+
     private List<Department> departments;
 }
