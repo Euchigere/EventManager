@@ -2,12 +2,14 @@ package dev.euchigere.eventsmanager.dto;
 
 import dev.euchigere.eventsmanager.models.Department;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
 @Component
-public class UserDto {
+public class UserDTO {
     private Long id;
     private Integer rank;
     private String firstName;
@@ -17,13 +19,5 @@ public class UserDto {
     private String contact;
     private String email;
     private LocalDate dob;
-
-    private String message;
-    private boolean status;
-
     private Department department;
-
-    public void setDob(String dob) {
-        this.dob = LocalDate.parse(dob);
-    }
 }
