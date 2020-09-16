@@ -2,8 +2,10 @@ package dev.euchigere.eventsmanager.controllers;
 
 import dev.euchigere.eventsmanager.dto.DepartmentDTO;
 import dev.euchigere.eventsmanager.dto.ServiceResponse;
+import dev.euchigere.eventsmanager.models.Event;
 import dev.euchigere.eventsmanager.models.User;
 import dev.euchigere.eventsmanager.service.DepartmentService;
+import dev.euchigere.eventsmanager.service.EventService;
 import dev.euchigere.eventsmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ public class MainController {
     DepartmentService deptService;
     @Autowired
     UserService userService;
+    @Autowired
+    EventService eventService;
 
     @GetMapping("/")
     public String index(HttpSession session, Model model) {
@@ -30,10 +34,14 @@ public class MainController {
         }
         ServiceResponse<DepartmentDTO> response =
                 deptService.getCurrentUserDepartment(currentUser.getDepartment().getId());
-        ServiceResponse<List<DepartmentDTO>> responses = deptService.getAllDepartments();
+        ServiceResponse<List<DepartmentDTO>> deptList = deptService.getAllDepartments();
+
+        if (!response.isStatus()) {
+            return "index";
+        }
 
         model.addAttribute("currentUserDept", response.getData());
-        model.addAttribute("depts", responses.getData());
+        model.addAttribute("deptList", deptList.getData());
         return "index";
     }
 
@@ -46,7 +54,19 @@ public class MainController {
     }
 
     @PostMapping("/add-department")
-    public String addDepartment() {
-        return null;
+    public String addDepartment(@RequestParam(value = "dept-name") String deptName) {
+        deptService.createDepartment(deptName);
+        return "redirect:/";
+    }
+
+    @GetMapping("/all-events")
+    public String displayAllEvents(Model model) {
+        ServiceResponse<List<Event>> eventList = eventService.getAllEvents();
+        ServiceResponse<List<DepartmentDTO>> deptList = deptService.getAllDepartments();
+
+        model.addAttribute("eventList", eventList.getData());
+        model.addAttribute("deptList", deptList.getData());
+
+        return "all-events";
     }
 }

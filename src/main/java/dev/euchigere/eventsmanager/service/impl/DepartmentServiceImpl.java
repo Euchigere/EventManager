@@ -10,15 +10,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
-    DepartmentRepo departmentRepo;
+    DepartmentRepo deptRepo;
 
     public ServiceResponse<DepartmentDTO> getCurrentUserDepartment(Long departmentId) {
-        Department department = departmentRepo.findDepartmentById(departmentId).orElse(null);
+        Department department = deptRepo.findDepartmentById(departmentId).orElse(null);
         ServiceResponse<DepartmentDTO> response = new ServiceResponse<>();
 
         if (department == null) {
@@ -39,7 +38,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     public ServiceResponse<List<DepartmentDTO>> getAllDepartments() {
         List<Department> departments = new ArrayList<>();
-        departments.addAll(departmentRepo.findAll());
+        departments.addAll(deptRepo.findAll());
         List<DepartmentDTO> departmentDTOs = new ArrayList<>();
 
         for (Department dept : departments) {
@@ -53,5 +52,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         response.setData(departmentDTOs);
 
         return response;
+    }
+
+    public void createDepartment(String deptName) {
+        Department department = new Department();
+        department.setName(deptName);
+        deptRepo.save(department);
     }
 }

@@ -1,190 +1,286 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-  <link rel="stylesheet" th:href="@{/styles/main.css}">
+    <!-- Font Awesome -->
+    <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
 
-  <Title>Sign Up</Title>
+    <!--  custom sheet-->
+    <link rel="stylesheet" th:href="@{/styles/main.css}">
+
+    <Title>All Events</Title>
 </head>
+
 <body>
 <div class="container">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link h4" href="#">EventsManager <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <nav class="navbar navbar-expand-lg navbar-dark primary-color">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link h4" href="#">EventsManager <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Log Out</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  <main class="row main-container mt-5">
-    <div class="col-12 col-md-2">
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">My Events</a>
-        </li>
-        <li class="nav-item">
-          <hr>
-          <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Schedule Event</a>
-        </li>
-        <li class="nav-item">
-          <hr>
-          <a class="nav-link" href="addUserModal" tabindex="-1" aria-disabled="true" data-toggle="modal"
-             data-target="#addUserModal">Add User</a>
-        </li>
-        <li class="nav-item">
-          <hr>
-          <a class="nav-link" href="addDepartmentModal" tabindex="-1" aria-disabled="true"
-             data-toggle="modal" data-target="#addDepartmentModal">Add Department</a>
-        </li>
-        <li class="nav-item">
-          <hr>
-          <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">All Events</a>
-        </li>
-      </ul>
-    </div>
-    <div class="col-12 col-md-10 ">
-
-      <div class="card">
-        <div class="card-header" style="width: 100%">
-          <div>
-            <h5 class="card-title">Event title</h5>
-          </div>
-          <div class="text-primary">Mandatory</div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Log Out</a>
+                </li>
+            </ul>
         </div>
-        <div class="card-body">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <p class="card-text text-muted">Venue: <span class="text-body">#venueOfEvent</span></p>
-          <div class="row">
-            <p class="text-muted col-12 col-md-3">Date: <span class="text-body">#dateOfEvent</span></p>
-            <p class="text-muted col-12 col-md-3">Time: <span class="text-body">#timeOfEvent</span></p>
-            <p class="text-muted col-12 col-md-6">No of Attendees: <span
-                class="text-body">#noOfAttendees</span></p>
-          </div>
-          <hr>
-          <form class="form-inline options-form">
-            <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" id="customRadioInline1" name="customRadioInline1"
-                     class="custom-control-input">
-              <label class="custom-control-label" for="customRadioInline1">Accept</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" id="customRadioInline2" name="customRadioInline1"
-                     class="custom-control-input">
-              <label class="custom-control-label" for="customRadioInline2">Decline</label>
-            </div>
-          </form>
+    </nav>
+
+    <main class="row main-container mt-5">
+        <div class="col-12 col-md-2">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a aria-disabled="true" class="nav-link active" href="#" tabindex="-1">My Events</a>
+                </li>
+                <div>
+                    <li class="nav-item">
+                        <hr>
+                        <a aria-disabled="true" class="nav-link" href="#" tabindex="-1">Schedule Event</a>
+                    </li>
+                    <li class="nav-item">
+                        <hr>
+                        <a aria-disabled="true" class="nav-link" data-target="#addUserModal" data-toggle="modal" href="addUserModal"
+                           tabindex="-1">Add User</a>
+                    </li>
+                    <li class="nav-item">
+                        <hr>
+                        <a aria-disabled="true" class="nav-link" data-target="#addDepartmentModal" data-toggle="modal"
+                           href="addDepartmentModal" tabindex="-1">Add Department</a>
+                    </li>
+                    <li class="nav-item">
+                        <hr>
+                        <a aria-disabled="true" class="nav-link" href="#" tabindex="-1">All Events</a>
+                    </li>
+                </div>
+            </ul>
         </div>
-      </div>
-    </div>
-  </main>
+        <div class="col-12 col-md-10 ">
 
-  <!--Add User Modal -->
-  <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="exampleModalLabel0" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="exampleModalLabel0">Add User</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+            <div class="card">
+                <div class="card-header" style="width: 100%">
+                    <div>
+                        <h5 class="card-title">Event title</h5>
+                    </div>
+                    <div class="text-muted">Attendance Type: <span class="text-danger h5">Mandatory</span></div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <p class="card-text text-muted">Venue: <span class="text-body">#venueOfEvent</span></p>
+                    <div class="row">
+                        <p class="text-muted col-12 col-md-3">Date: <span class="text-body">#dateOfEvent</span></p>
+                        <p class="text-muted col-12 col-md-3">Time: <span class="text-body">#timeOfEvent</span></p>
+                        <p class="text-muted col-12 col-md-6">No of Attendees: <span
+                            class="text-body">#noOfAttendees</span></p>
+                    </div>
+                    <hr>
+                    <form class="form-inline options-form-all-event">
+                        <div>
+                            <button class="btn btn-primary btn-md" data-target="#editEventModal" data-toggle="modal"
+                                    type="button">Edit
+                                Event</button>
+                        </div>
+                        <div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input checked class="custom-control-input" id="customRadioInline1"
+                                       name="customRadioInline1" type="radio">
+                                <label class="custom-control-label" for="customRadioInline1">Accept</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input class="custom-control-input" disabled id="customRadioInline2"
+                                       name="customRadioInline1" type="radio">
+                                <label class="custom-control-label" for="customRadioInline2">Decline</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <form class="modal-body" action="#" th:action="@{/auth/add_user}" th:object="${user}" method="POST">
-          <div class="row">
-            <div class="col-6 form-group">
-              <input type="email" required name="email" class="form-control" placeholder="Email">
-            </div>
-            <div class="col-6 form-group">
-              <input type="text" required name="role" class="form-control" placeholder="Role">
-            </div>
+    </main>
 
-            <div class="col-12 form-group input-group mb-3">
-              <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelect01">Department</label>
-              </div>
-              <select class="custom-select" id="inputGroupSelect01">
-                <option selected>Choose...</option>
-                <option value="1">Manangement</option>
-                <option value="2">Programs</option>
-                <option value="3">Project</option>
-                <option value="1">Android</option>
-                <option value="2">Java</option>
-                <option value="3">Node</option>
-                <option value="1">Python</option>
-                <option value="2">C#</option>
-                <option value="3">IOS</option>
-              </select>
+    <!--Add User Modal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel0" class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel0">Add User</h4>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="#" class="modal-body" method="POST" th:action="@{/auth/add_user}" th:object="${user}">
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <input class="form-control" name="email" placeholder="Email" required type="email">
+                        </div>
+                        <div class="col-6 form-group">
+                            <input class="form-control" name="role" placeholder="Role" required type="text">
+                        </div>
+
+                        <div class="col-12 form-group input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Department</label>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect01">
+                                <option selected>Choose...</option>
+                                <option value="1">Manangement</option>
+                                <option value="2">Programs</option>
+                                <option value="3">Project</option>
+                                <option value="1">Android</option>
+                                <option value="2">Java</option>
+                                <option value="3">Node</option>
+                                <option value="1">Python</option>
+                                <option value="2">C#</option>
+                                <option value="3">IOS</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                    </div>
+                </form>
             </div>
-          </div>
-
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success btn-block">Submit</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!--Add Department Modal -->
-  <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-       aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="exampleModalLabel">Add Department</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
         </div>
-        <form class="modal-body" action="#" method="POST">
-
-          <div class="col-12 form-group">
-            <input type="text" required name="department-name" class="form-control"
-                   placeholder="Department Name">
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success btn-block">Submit</button>
-          </div>
-        </form>
-      </div>
     </div>
-  </div>
+
+    <!--Add Department Modal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="addDepartmentModal"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Add Department</h4>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="#" class="modal-body" method="POST">
+
+                    <div class="col-12 form-group">
+                        <input class="form-control" name="department-name" placeholder="Department Name" required
+                               type="text">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Event Modal -->
+    <div aria-hidden="true" aria-labelledby="editModalLabel" class="modal fade" id="editEventModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="editModalLabel">Edit Event</h4>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="#" class="col-12 col-md-10 mr-auto ml-auto modal-body" method="POST"
+                      th:action="@{/auth/add_user}" th:object="${user}">
+                    <div class="row">
+                        <div class="col-12 form-group">
+                            <label class="text-muted" for="event-title" style="font-size: 0.8rem;">Event
+                                Title</label>
+                            <input class="form-control" id="event-title" name="event-title" required th:field="*{title}"
+                                   type="text">
+                        </div>
+                        <div class="col-12 form-group">
+                            <label class="text-muted" for="event-description" style="font-size: 0.8rem;">Event
+                                Description</label>
+                            <textarea class="form-control" id="event-description" id="post-input"
+                                      maxlength="250" minlength="3" name="event-description" required
+                                      rows="3" th:field="*{description}"></textarea>
+                        </div>
+                        <div class="col-12 form-group">
+                            <label class="text-muted" for="venue" style="font-size: 0.8rem;">Venue</label>
+                            <input class="form-control" id="venue" name="Venue" required th:field="*{venue}"
+                                   type="text">
+                        </div>
+                        <div class="col-8 form-group">
+                            <label class="text-muted" for="date-of-event" style="font-size: 0.8rem;">Date of
+                                Event</label>
+                            <input class="form-control" id="date-of-event" name="date-of-event" placeholder="dd/mm/yyyy" required
+                                   th:field="*{dob}" type="date">
+                        </div>
+                        <div class="col-4 form-group">
+                            <label class="text-muted" for="time-of-event" style="font-size: 0.8rem;">Time of
+                                Event</label>
+                            <input class="form-control" name="mobile-reg" placeholder="Mobile number" required
+                                   type="time">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="text-muted" style="font-size: 0.8rem;">Attendance Type</label>
+                        </div>
+                        <div class="col-6 form-group mr-2 custom-radio">
+                            <label class="radio-label text-muted" for="typeMandatory">Mandatory</label>
+                            <input class="radio-button" id="typeMandatory" name="attendance-type" required th:field="*{gender}"
+                                   type="radio" value="Mandatory">
+                        </div>
+                        <div class="col-4 form-group custom-radio">
+                            <label class="radio-label text-muted" for="typeOptional">Optional</label>
+                            <input class="radio-button" id="typeOptional" name="attendance-type" required th:field="*{gender}"
+                                   type="radio" value="Optional">
+                        </div>
+                        <small class="col-12 form-group form-text text-muted">
+                            Select all the departments that apply
+                        </small>
+
+                        <div class="col-12">
+                            <select class="custom-select form-group" multiple>
+                                <option selected>Open this select menu</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="">
+                        <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"></script>
+
+<!-- JQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+<!-- Bootstrap tooltips -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"
+        type="text/javascript"></script>
+<!-- Bootstrap core JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"
+        type="text/javascript"></script>
+<!-- MDB core JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"
+        type="text/javascript"></script>
 </body>
 
 </html>

@@ -7,3 +7,18 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.options-form-all-event {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Important part */
+.modal-dialog {
+    overflow-y: initial !important
+}
+
+.modal-body {
+    /* height: 250px; */
+    overflow-y: auto;
+}
