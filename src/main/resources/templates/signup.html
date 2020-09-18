@@ -47,6 +47,8 @@
     <div class="py-5">
         <form class="col-12 col-md-8 mr-auto ml-auto sign-in-form" action="#" th:action="@{/auth/signup}"
               th:object="${user}" method="POST">
+            <div class="text-center text-success" th:if="${flashMessage != null}" th:text="${flashMessage}"></div>
+            <div class="text-center text-danger" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
             <div class="row">
                 <div class="col-6 form-group">
                     <input type="text" required name="firstname-reg" th:field="*{firstName}" class="form-control"
@@ -61,7 +63,8 @@
                            placeholder="Email address">
                 </div>
                 <div class="col-6 form-group">
-                    <input type="tel" required name="mobile-reg" class="form-control" placeholder="Mobile number">
+                    <input type="tel" required name="mobile-reg" th:field="*{contact}" class="form-control"
+                           placeholder="Mobile number">
                 </div>
                 <div class="col-6 form-group">
                     <input id="password" type="password" class="form-control" name="password-reg" th:field="*{password}"
@@ -119,6 +122,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/script/action.js}"></script>
 </body>
 
 </html>

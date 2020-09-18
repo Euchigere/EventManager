@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/auth/")
-public class LoginAndSignUpController {
+public class AuthController {
     @Autowired
     UserService userService;
 
@@ -49,7 +49,7 @@ public class LoginAndSignUpController {
     @PostMapping("signup")
     public String signUp(@Valid User user, BindingResult result, RedirectAttributes redirectAttr) {
         if (result.hasErrors()) {
-            redirectAttr.addFlashAttribute("user", user);
+            redirectAttr.addFlashAttribute("errorMessage", result.getFieldError().getDefaultMessage());
             return "redirect:/auth/signup";
         }
 

@@ -3,6 +3,7 @@ package dev.euchigere.eventsmanager.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,7 +11,6 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class User {
     @Id
@@ -29,18 +29,11 @@ public class User {
     @NotBlank
     @Column(unique = true)
     private String email;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
     @NotBlank
     private String password;
 
     @ManyToOne
     private Department department;
-
-    public void setDob(String dob) {
-        this.dob = LocalDate.parse(dob);
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
 }

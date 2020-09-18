@@ -24,7 +24,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark primary-color">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link h4" href="#">EventsManager <span class="sr-only">(current)</span></a>
+                <a class="nav-link h4" href="/">EventsManager <span class="sr-only">(current)</span></a>
             </li>
         </ul>
         <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
@@ -35,10 +35,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
+                    <a class="nav-link" href="/">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Log Out</a>
+                    <a class="nav-link" href="/logout">Log Out</a>
                 </li>
             </ul>
         </div>
@@ -48,12 +48,12 @@
         <div class="col-12 col-md-2">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a aria-disabled="true" class="nav-link active" href="#" tabindex="-1">My Events</a>
+                    <a aria-disabled="true" class="nav-link active" href="/" tabindex="-1">My Events</a>
                 </li>
-                <div>
+                <div th:if="${currentUser.rank == 1}">
                     <li class="nav-item">
                         <hr>
-                        <a aria-disabled="true" class="nav-link" href="#" tabindex="-1">Schedule Event</a>
+                        <a aria-disabled="true" class="nav-link" href="/schedule-event" tabindex="-1">Schedule Event</a>
                     </li>
                     <li class="nav-item">
                         <hr>
@@ -67,40 +67,39 @@
                     </li>
                     <li class="nav-item">
                         <hr>
-                        <a aria-disabled="true" class="nav-link" href="#" tabindex="-1">All Events</a>
+                        <a aria-disabled="true" class="nav-link" href="/all-events" tabindex="-1">All Events</a>
                     </li>
                 </div>
             </ul>
         </div>
         <div class="col-12 col-md-10 ">
 
-            <div class="card">
+            <div class="card" th:each="event : ${currentUserDept.events}">
                 <div class="card-header" style="width: 100%">
                     <div>
-                        <h5 class="card-title">Event title</h5>
+                        <h5 class="card-title" th:text="${event.title}">Event title</h5>
                     </div>
-                    <div class="text-primary">Mandatory</div>
+                    <div class="text-primary" th:text="${#strings.equals(event.attendanceType, 'mandatory') ? 'Mandatory' : 'Optional'}">Mandatory</div>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <p class="card-text text-muted">Venue: <span class="text-body">#venueOfEvent</span></p>
+                    <p class="card-text" th:text="${event.description}">With supporting text below as a natural lead-in to additional content.</p>
+                    <p class="card-text text-muted">Venue: <span class="text-body" th:text="${event.venue}">#venueOfEvent</span></p>
                     <div class="row">
-                        <p class="text-muted col-12 col-md-3">Date: <span class="text-body">#dateOfEvent</span></p>
-                        <p class="text-muted col-12 col-md-3">Time: <span class="text-body">#timeOfEvent</span></p>
+                        <p class="text-muted col-12 col-md-3">Date: <span class="text-body" th:text="${event.date}">#dateOfEvent</span></p>
+                        <p class="text-muted col-12 col-md-3">Time: <span class="text-body" th:text="${event.time}">#timeOfEvent</span></p>
                         <p class="text-muted col-12 col-md-6">No of Attendees: <span
-                            class="text-body">#noOfAttendees</span></p>
+                            class="text-body" th:text="${event.noOfAttendees}">#noOfAttendees</span></p>
                     </div>
                     <hr>
                     <form class="form-inline options-form">
                         <div class="custom-control custom-radio custom-control-inline">
                             <input class="custom-control-input" id="customRadioInline1" name="customRadioInline1"
-                                   type="radio">
+                                   type="radio" th:attr="selected=${#strings.equals(event.attendanceType, 'mandatory') ? true : false">
                             <label class="custom-control-label" for="customRadioInline1">Accept</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
                             <input class="custom-control-input" id="customRadioInline2" name="customRadioInline1"
-                                   type="radio">
+                                   type="radio" th:attr="disabled=${#strings.equals(event.attendanceType, 'mandatory') ? true : false">
                             <label class="custom-control-label" for="customRadioInline2">Decline</label>
                         </div>
                     </form>
@@ -119,7 +118,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="#" class="modal-body" method="POST" th:action="@{/auth/add_user}" th:object="${user}">
+                <form action="#" class="modal-body" method="POST" th:action="@{/add-user}" th:object="${user}">
                     <div class="row">
                         <div class="col-6 form-group">
                             <input class="form-control" name="email" placeholder="Email" required type="email">
@@ -132,17 +131,9 @@
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="inputGroupSelect01">Department</label>
                             </div>
-                            <select class="custom-select" id="inputGroupSelect01">
-                                <option selected>Choose...</option>
-                                <option value="1">Manangement</option>
-                                <option value="2">Programs</option>
-                                <option value="3">Project</option>
-                                <option value="1">Android</option>
-                                <option value="2">Java</option>
-                                <option value="3">Node</option>
-                                <option value="1">Python</option>
-                                <option value="2">C#</option>
-                                <option value="3">IOS</option>
+                            <select class="custom-select" id="inputGroupSelect01" name="dept-id" required>
+                                <option selected disabled hidden>Choose...</option>
+                                <option value="1" th:each="dept : ${deptList}" th:value="${dept.id}" th:text="${dept.name}">Manangement</option>
                             </select>
                         </div>
                     </div>
@@ -166,10 +157,10 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="#" class="modal-body" method="POST">
+                <form action="/add-department" class="modal-body" method="POST">
 
                     <div class="col-12 form-group">
-                        <input class="form-control" name="department-name" placeholder="Department Name" required
+                        <input class="form-control" name="dept-name" placeholder="Department Name" required
                                type="text">
                     </div>
                     <div class="modal-footer">

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface EventService {
     ServiceResponse<List<Event>> getAllEvents();
+
+    void addEvent(Event event);
 }

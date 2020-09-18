@@ -55,6 +55,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     public void createDepartment(String deptName) {
+        List<Department> departments = deptRepo.findDepartmentByNameLike(deptName);
+        if (!departments.isEmpty()) {
+            return;
+        }
         Department department = new Department();
         department.setName(deptName);
         deptRepo.save(department);

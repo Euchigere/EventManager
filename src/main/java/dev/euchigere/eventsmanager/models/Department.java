@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +22,6 @@ public class Department {
     @OneToMany(mappedBy = "department")
     private List<User> users;
 
-    @ManyToMany(mappedBy = "departments")
-    private List<Event> events;
+    @ManyToMany(mappedBy = "departments", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Event> events = new HashSet<>();
 }
