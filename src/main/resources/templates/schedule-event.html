@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+
+    <!--  custom sheet-->
+    <link rel="stylesheet" th:href="@{/styles/main.css}">
+
+    <Title>Schedule Event</Title>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark primary-color">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link h4" href="/">EventsManager <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="row main-container mt-5">
+        <div class="col-12 col-md-2">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/" tabindex="-1" aria-disabled="true">My Events</a>
+                </li>
+                <div>
+                    <li class="nav-item">
+                        <hr>
+                        <a class="nav-link" href="/schedule-event" tabindex="-1" aria-disabled="true">Schedule Event</a>
+                    </li>
+                    <li class="nav-item">
+                        <hr>
+                        <a class="nav-link" href="addUserModal" tabindex="-1" aria-disabled="true" data-toggle="modal"
+                           data-target="#addUserModal">Add User</a>
+                    </li>
+                    <li class="nav-item">
+                        <hr>
+                        <a class="nav-link" href="addDepartmentModal" tabindex="-1" aria-disabled="true"
+                           data-toggle="modal" data-target="#addDepartmentModal">Add Department</a>
+                    </li>
+                    <li class="nav-item">
+                        <hr>
+                        <a class="nav-link" href="/all-events" tabindex="-1" aria-disabled="true">All Events</a>
+                    </li>
+                </div>
+            </ul>
+        </div>
+        <div class="col-12 col-md-10 ">
+
+            <form class="col-12 col-md-8 mr-auto ml-auto sign-in-form" th:object="${event}" action="#"
+                  th:action="${event.id == null} ? @{/schedule-event} : @{/schedule-event/{event-id}(event-id=${event.id})}" method="POST">
+                <div class="row">
+                    <div class="col-12 form-group">
+                        <label style="font-size: 0.8rem;" class="text-muted" for="event-title">Event Title</label>
+                        <input id="event-title" type="text" required name="event-title" th:field="*{title}"
+                               class="form-control">
+                    </div>
+                    <div class="col-12 form-group">
+                        <label style="font-size: 0.8rem;" class="text-muted" for="event-description">Event
+                            Description</label>
+                        <textarea id="event-description" required name="event-description" th:field="*{description}"
+                                  minlength="3" maxlength="250" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="col-12 form-group">
+                        <label style="font-size: 0.8rem;" class="text-muted" for="venue">Venue</label>
+                        <input id="venue" type="text" required name="Venue" th:field="*{venue}"
+                               class="form-control">
+                    </div>
+                    <div class="col-8 form-group">
+                        <label style="font-size: 0.8rem;" class="text-muted" for="date-of-event">Date of
+                            Event</label>
+                        <input type="date" id="date-of-event" required class="form-control" name="date-of-event"
+                               th:field="*{date}" placeholder="dd/mm/yyyy">
+                    </div>
+                    <div class="col-4 form-group">
+                        <label style="font-size: 0.8rem;" class="text-muted" for="time-of-event">Time of
+                            Event</label>
+                        <input id="time-of-event" type="time" required name="mobile-reg" class="form-control"
+                               th:field="*{time}">
+                    </div>
+
+                    <div class="col-12">
+                        <label style="font-size: 0.8rem;" class="text-muted">Attendance Type</label>
+                    </div>
+                    <div class="col-6 form-group mr-2 custom-radio">
+                        <label class="radio-label text-muted" for="typeMandatory">Mandatory</label>
+                        <input type="radio" value="mandatory" th:field="*{attendanceType}" required id="typeMandatory"
+                               name="attendance-type" class="radio-button">
+                    </div>
+                    <div class="col-4 form-group custom-radio">
+                        <label class="radio-label text-muted" for="typeOptional">Optional</label>
+                        <input type="radio" value="optional" th:field="*{attendanceType}" required id="typeOptional"
+                               name="attendance-type" class="radio-button">
+                    </div>
+                    <p class="card-text text-muted col-12" th:if="${!event.departments.isEmpty()}">Departments in Attendance:
+                        <span class="text-body" th:each="dept : ${event.departments}" th:text="${dept.name} + ',  '"></span></p>
+                    <small class="col-12 form-group form-text text-muted" >
+                        Select all the departments that apply
+                    </small>
+                    <div class="col-12">
+                        <select class="custom-select form-group" multiple th:field="*{deptIds}" required>
+                            <option value="" selected disabled hidden>Open this select menu</option>
+                            <option th:each="dept : ${deptList}" th:value="${dept.id}" th:text="${dept.name}">Manangement</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="">
+                    <button type="submit" class="btn btn-primary btn-block">Schedule Event</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!--Add User Modal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel0" class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel0">Add User</h4>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="#" class="modal-body" method="POST" th:action="@{/add-user}" th:object="${user}">
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <input class="form-control" name="email" placeholder="Email" required type="email">
+                        </div>
+                        <div class="col-6 form-group">
+                            <input class="form-control" name="role" placeholder="Role" required type="text">
+                        </div>
+
+                        <div class="col-12 form-group input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Department</label>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect01" name="dept-id" required>
+                                <option selected disabled hidden>Choose...</option>
+                                <option th:each="dept : ${deptList}" th:value="${dept.id}" th:text="${dept.name}">Manangement</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--Add Department Modal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="addDepartmentModal"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Add Department</h4>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/add-department" class="modal-body" method="POST">
+
+                    <div class="col-12 form-group">
+                        <input class="form-control" name="dept-name" placeholder="Department Name" required
+                               type="text">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+</body>
+
+</html>
