@@ -27,11 +27,12 @@ public class Event {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
+    @DateTimeFormat(iso= DateTimeFormat.ISO.TIME, pattern = "HH:mm")
     private LocalTime time;
     private String attendanceType;
     private Long noOfAttendees = 0l;
 
-    @ManyToMany
+    @ManyToMany()
     private Set<Department> departments = new HashSet<>();
 
     @Transient
@@ -39,6 +40,13 @@ public class Event {
 
     public void setTime(String time) {
         this.time = LocalTime.parse(time);
+    }
+
+    public String getTime() {
+        if (this.time == null) {
+            return null;
+        }
+        return this.time.toString();
     }
 
     //Getters and setters
@@ -50,5 +58,27 @@ public class Event {
     public void removeDepartment(Department dept) {
         departments.remove(dept);
         dept.getEvents().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Event)) return false;
+
+        Event event = (Event) o;
+
+        return new org.apache.commons.lang3.builder.EqualsBuilder()
+                .append(getId(), event.getId())
+                .append(getTitle(), event.getTitle())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37)
+                .append(getId())
+                .append(getTitle())
+                .toHashCode();
     }
 }

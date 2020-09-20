@@ -8,7 +8,9 @@ import dev.euchigere.eventsmanager.repository.EventRepo;
 import dev.euchigere.eventsmanager.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class EventServiceImpl implements EventService {
 
     public ServiceResponse<List<Event>> getAllEvents() {
         ServiceResponse<List<Event>> response = new ServiceResponse<>();
-        response.setData(eventRepo.findAll());
+        response.setData(eventRepo.findByOrderByDateAsc());
         return response;
     }
 
@@ -51,7 +53,8 @@ public class EventServiceImpl implements EventService {
             Department dept = it.next();
             if (!event.getDeptIds().contains(dept.getId())) {
                 event.getDeptIds().remove(dept.getId());
-                e.removeDepartment(dept);
+                dept.getEvents().remove(e);
+                it.remove();
             }
         }
 
@@ -64,5 +67,17 @@ public class EventServiceImpl implements EventService {
             e.addDepartment(dept);
         }
         eventRepo.save(e);
+    }
+
+    @Transactional
+    public ServiceResponse<Event> getEventFromSession(HttpSession session, int index) {
+        List<Event> eventList = (List) session.getAttribute("eventList");
+        ServiceResponse<Event> response = new ServiceResponse<>();
+        response.setData(eventList.get(index));
+        return response;
+    }
+
+    public void deleteEvent(Event event) {
+        eventRepo.delete(event);
     }
 }

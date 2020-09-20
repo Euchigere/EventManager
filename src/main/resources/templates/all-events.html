@@ -74,9 +74,10 @@
                 </div>
             </ul>
         </div>
-        <div class="col-12 col-md-10 ">
+        <div class="col-12 col-md-10">
+            <p class="text-center" th:if="${eventList.isEmpty()}" th:text="${'No event'}"></p>
 
-            <div class="card" th:each="event : ${currentUserDept.events}">
+            <div class="card mb-4" th:each="event, itemStat : ${eventList}">
                 <div class="card-header" style="width: 100%">
                     <div>
                         <h5 class="card-title" th:text="${event.title}">Event title</h5>
@@ -84,34 +85,25 @@
                     <div class="text-primary" th:text="${#strings.equals(event.attendanceType, 'mandatory') ? 'Mandatory' : 'Optional'}">Mandatory</div>
                 </div>
                 <div class="card-body">
-                    <p class="card-text" th:text="${event.description}">With supporting text below as a natural lead-in to additional content.</p>
+                    <p class="card-text text-body text-monospace" th:text="${event.description}">With supporting text below as a natural lead-in to additional content.</p>
                     <p class="card-text text-muted">Venue: <span class="text-body" th:text="${event.venue}">#venueOfEvent</span></p>
+                    <p class="card-text text-muted">Departments in Attendance:
+                        <span class="text-body" th:each="dept : ${event.departments}" th:text="${dept.name} + ',  '"></span></p>
                     <div class="row">
                         <p class="text-muted col-12 col-md-3">Date: <span class="text-body" th:text="${event.date}">#dateOfEvent</span></p>
                         <p class="text-muted col-12 col-md-3">Time: <span class="text-body" th:text="${event.time}">#timeOfEvent</span></p>
-                        <p class="text-muted col-12 col-md-6">No of Attendees: <span
-                            class="text-body" th:text="${event.noOfAttendees}">#noOfAttendees</span></p>
+<!--                        <p class="text-muted col-12 col-md-6">No of Attendees: <span-->
+<!--                            class="text-body" th:text="${event.noOfAttendees}">#noOfAttendees</span></p>-->
                     </div>
                     <hr>
-                    <form class="form-inline options-form-all-event">
-                        <div>
-                            <button class="btn btn-primary btn-md" data-target="#editEventModal" data-toggle="modal"
-                                    type="button">Edit
-                                Event</button>
-                        </div>
-                        <div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input checked class="custom-control-input" id="customRadioInline1"
-                                       name="customRadioInline1" type="radio">
-                                <label class="custom-control-label" for="customRadioInline1">Accept</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input class="custom-control-input" disabled id="customRadioInline2"
-                                       name="customRadioInline1" type="radio">
-                                <label class="custom-control-label" for="customRadioInline2">Decline</label>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="options-form-all-event">
+                        <form class="form-inline" action="#" th:action="@{/edit-event/{index}(index=${itemStat.index})}" method="POST">
+                            <button class="btn btn-primary btn-md" type="submit">Edit Event</button>
+                        </form>
+                        <form class="form-inline" action="#" th:action="@{/remove-event/{index}(index=${itemStat.index})}" method="POST">
+                            <button class="btn btn-primary btn-md" type="submit">Remove Event</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -173,84 +165,6 @@
                                type="text">
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary btn-block" type="submit">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Event Modal -->
-    <div aria-hidden="true" aria-labelledby="editModalLabel" class="modal fade" id="editEventModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="editModalLabel">Edit Event</h4>
-                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="#" class="col-12 col-md-10 mr-auto ml-auto modal-body" method="POST"
-                      th:action="@{/auth/add_user}" th:object="${user}">
-                    <div class="row">
-                        <div class="col-12 form-group">
-                            <label class="text-muted" for="event-title" style="font-size: 0.8rem;">Event
-                                Title</label>
-                            <input class="form-control" id="event-title" name="event-title" required th:field="*{title}"
-                                   type="text">
-                        </div>
-                        <div class="col-12 form-group">
-                            <label class="text-muted" for="event-description" style="font-size: 0.8rem;">Event
-                                Description</label>
-                            <textarea class="form-control" id="event-description" id="post-input"
-                                      maxlength="250" minlength="3" name="event-description" required
-                                      rows="3" th:field="*{description}"></textarea>
-                        </div>
-                        <div class="col-12 form-group">
-                            <label class="text-muted" for="venue" style="font-size: 0.8rem;">Venue</label>
-                            <input class="form-control" id="venue" name="Venue" required th:field="*{venue}"
-                                   type="text">
-                        </div>
-                        <div class="col-8 form-group">
-                            <label class="text-muted" for="date-of-event" style="font-size: 0.8rem;">Date of
-                                Event</label>
-                            <input class="form-control" id="date-of-event" name="date-of-event" placeholder="dd/mm/yyyy" required
-                                   th:field="*{dob}" type="date">
-                        </div>
-                        <div class="col-4 form-group">
-                            <label class="text-muted" for="time-of-event" style="font-size: 0.8rem;">Time of
-                                Event</label>
-                            <input class="form-control" name="mobile-reg" placeholder="Mobile number" required
-                                   type="time">
-                        </div>
-
-                        <div class="col-12">
-                            <label class="text-muted" style="font-size: 0.8rem;">Attendance Type</label>
-                        </div>
-                        <div class="col-6 form-group mr-2 custom-radio">
-                            <label class="radio-label text-muted" for="typeMandatory">Mandatory</label>
-                            <input class="radio-button" id="typeMandatory" name="attendance-type" required th:field="*{gender}"
-                                   type="radio" value="Mandatory">
-                        </div>
-                        <div class="col-4 form-group custom-radio">
-                            <label class="radio-label text-muted" for="typeOptional">Optional</label>
-                            <input class="radio-button" id="typeOptional" name="attendance-type" required th:field="*{gender}"
-                                   type="radio" value="Optional">
-                        </div>
-                        <small class="col-12 form-group form-text text-muted">
-                            Select all the departments that apply
-                        </small>
-
-                        <div class="col-12">
-                            <select class="custom-select form-group" multiple>
-                                <option selected>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="">
                         <button class="btn btn-primary btn-block" type="submit">Submit</button>
                     </div>
                 </form>

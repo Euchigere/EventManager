@@ -73,8 +73,9 @@
             </ul>
         </div>
         <div class="col-12 col-md-10 ">
+            <p class="text-center" th:if="${currentUserDept.events.isEmpty()}" th:text="${'No event on schedule'}"></p>
 
-            <div class="card" th:each="event : ${currentUserDept.events}">
+            <div class="card mb-4" th:each="event : ${currentUserDept.events}">
                 <div class="card-header" style="width: 100%">
                     <div>
                         <h5 class="card-title" th:text="${event.title}">Event title</h5>
@@ -84,22 +85,24 @@
                 <div class="card-body">
                     <p class="card-text" th:text="${event.description}">With supporting text below as a natural lead-in to additional content.</p>
                     <p class="card-text text-muted">Venue: <span class="text-body" th:text="${event.venue}">#venueOfEvent</span></p>
+                    <p class="card-text text-muted">Departments in Attendance:
+                        <span class="text-body" th:each="dept : ${event.departments}" th:text="${dept.name} + ',  '"></span></p>
                     <div class="row">
                         <p class="text-muted col-12 col-md-3">Date: <span class="text-body" th:text="${event.date}">#dateOfEvent</span></p>
                         <p class="text-muted col-12 col-md-3">Time: <span class="text-body" th:text="${event.time}">#timeOfEvent</span></p>
-                        <p class="text-muted col-12 col-md-6">No of Attendees: <span
-                            class="text-body" th:text="${event.noOfAttendees}">#noOfAttendees</span></p>
+<!--                        <p class="text-muted col-12 col-md-6">No of Attendees: <span-->
+<!--                            class="text-body" th:text="${event.noOfAttendees}">#noOfAttendees</span></p>-->
                     </div>
                     <hr>
                     <form class="form-inline options-form">
                         <div class="custom-control custom-radio custom-control-inline">
                             <input class="custom-control-input" id="customRadioInline1" name="customRadioInline1"
-                                   type="radio" th:attr="selected=${#strings.equals(event.attendanceType, 'mandatory') ? true : false">
+                                   type="radio" th:selected="${#strings.equals(event.attendanceType, 'mandatory')}">
                             <label class="custom-control-label" for="customRadioInline1">Accept</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
                             <input class="custom-control-input" id="customRadioInline2" name="customRadioInline1"
-                                   type="radio" th:attr="disabled=${#strings.equals(event.attendanceType, 'mandatory') ? true : false">
+                                   type="radio" th:disabled="${#strings.equals(event.attendanceType, 'mandatory')}">
                             <label class="custom-control-label" for="customRadioInline2">Decline</label>
                         </div>
                     </form>

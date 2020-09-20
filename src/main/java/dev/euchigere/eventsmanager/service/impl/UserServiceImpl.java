@@ -45,10 +45,15 @@ public class UserServiceImpl implements UserService {
     public ServiceResponse<User> validateUser(User user) {
         User u = userRepo.findUserByEmail(user.getEmail()).orElse(null);
         ServiceResponse<User> response = new ServiceResponse<>();
+
         if (u == null) {
             response.setStatus(false);
             response.setMessage("Invalid details, Unknown user");
             response.setData(user);
+            return response;
+        } else if (u.getPassword() != null) {
+            response.setStatus(false);
+            response.setMessage("Email already Registered");
             return response;
         }
         u.setFirstName(user.getFirstName());

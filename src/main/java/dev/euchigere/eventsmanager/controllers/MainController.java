@@ -4,14 +4,16 @@ import dev.euchigere.eventsmanager.dto.DepartmentDTO;
 import dev.euchigere.eventsmanager.dto.ServiceResponse;
 import dev.euchigere.eventsmanager.dto.UserDTO;
 import dev.euchigere.eventsmanager.models.Event;
-import dev.euchigere.eventsmanager.models.User;
 import dev.euchigere.eventsmanager.service.DepartmentService;
 import dev.euchigere.eventsmanager.service.EventService;
 import dev.euchigere.eventsmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -82,6 +84,8 @@ public class MainController {
         model.addAttribute("eventList", eventList.getData());
         model.addAttribute("deptList", deptList.getData());
 
+        session.setAttribute("eventList", eventList.getData());
+
         return "all-events";
     }
 
@@ -98,18 +102,44 @@ public class MainController {
         return "schedule-event";
     }
 
-    @PostMapping("/schedule-event")
-    public String scheduleEvent(Event event) {
-        eventService.addEvent(event);
+    @RequestMapping(value = {"/schedule-event", "/schedule-event/{event-id}"}, method = RequestMethod.POST)
+    public String scheduleEvent(@PathVariable(value = "event-id", required = false) Long eventId,
+            Event event, HttpSession session) {
+        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/auth/login";
+        }
+        System.out.println(event);
+        if (eventId != null) {
+            System.out.println(eventId);
+            event.setId(eventId);
+            eventService.addEvent(event);
+        } else {
+            eventService.addEvent(event);
+        }
         return "redirect:/all-events";
     }
 
+    @PostMapping("/edit-event/{index}")
+    public String editEvent(@PathVariable(value = "index") int index,
+                            RedirectAttributes redirectAttr,
+                            HttpSession session) {
+        ServiceResponse<Event> response = eventService.getEventFromSession(session, index);
+        if (response.getData() == null) {
+            return "redirect:/all-events";
+        }
 
-    @PostMapping("/edit-event/{event-id}")
-    public String editEvent(@PathVariable("event-id") long eventId,
-                            @RequestParam("event-title") String eventTitle,
-                            @RequestParam("description") String description) {
-        return "redirect:/";
+        System.out.println(response.getData().getId());
+        redirectAttr.addFlashAttribute("event", response.getData());
+        return "redirect:/schedule-event";
+    }
+
+    @PostMapping("/remove-event/{index}")
+    public String removeEvent(@PathVariable(value = "index") int index,
+                              HttpSession session) {
+        ServiceResponse<Event> response = eventService.getEventFromSession(session, index);
+        eventService.deleteEvent(response.getData());
+        return "redirect:/all-events";
     }
 
     @GetMapping("logout")

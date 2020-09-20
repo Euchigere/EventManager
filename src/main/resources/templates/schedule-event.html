@@ -75,8 +75,8 @@
         </div>
         <div class="col-12 col-md-10 ">
 
-            <form class="col-12 col-md-8 mr-auto ml-auto sign-in-form" action="/schedule-event"
-                  th:object="${event}" method="POST">
+            <form class="col-12 col-md-8 mr-auto ml-auto sign-in-form" th:object="${event}" action="#"
+                  th:action="${event.id == null} ? @{/schedule-event} : @{/schedule-event/{event-id}(event-id=${event.id})}" method="POST">
                 <div class="row">
                     <div class="col-12 form-group">
                         <label style="font-size: 0.8rem;" class="text-muted" for="event-title">Event Title</label>
@@ -120,11 +120,13 @@
                         <input type="radio" value="optional" th:field="*{attendanceType}" required id="typeOptional"
                                name="attendance-type" class="radio-button">
                     </div>
+                    <p class="card-text text-muted col-12" th:if="${!event.departments.isEmpty()}">Departments in Attendance:
+                        <span class="text-body" th:each="dept : ${event.departments}" th:text="${dept.name} + ',  '"></span></p>
                     <small class="col-12 form-group form-text text-muted" >
                         Select all the departments that apply
                     </small>
                     <div class="col-12">
-                        <select class="custom-select form-group" multiple th:field="*{deptIds}">
+                        <select class="custom-select form-group" multiple th:field="*{deptIds}" required>
                             <option value="" selected disabled hidden>Open this select menu</option>
                             <option th:each="dept : ${deptList}" th:value="${dept.id}" th:text="${dept.name}">Manangement</option>
                         </select>
