@@ -26,7 +26,7 @@ public class MainController {
     EventService eventService;
 
     @GetMapping("/")
-    public String index(HttpSession session, Model model) {
+    public String showIndexPage(HttpSession session, Model model) {
         UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
         if (currentUser == null) {
             return "redirect:/auth/login";
@@ -43,6 +43,37 @@ public class MainController {
         model.addAttribute("currentUserDept", response.getData());
         model.addAttribute("deptList", deptList.getData());
         return "index";
+    }
+
+    @GetMapping("/schedule-event")
+    public String showScheduleEventForm(Event event, HttpSession session, Model model) {
+        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/auth/login";
+        }
+        ServiceResponse<List<DepartmentDTO>> deptList = deptService.getAllDepartments();
+
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("deptList", deptList.getData());
+        return "schedule-event";
+    }
+
+    @GetMapping("/all-events")
+    public String showAllEventsPage(Model model, HttpSession session) {
+        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/auth/login";
+        }
+        ServiceResponse<List<Event>> eventList = eventService.getAllEvents();
+        ServiceResponse<List<DepartmentDTO>> deptList = deptService.getAllDepartments();
+
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("eventList", eventList.getData());
+        model.addAttribute("deptList", deptList.getData());
+
+        session.setAttribute("eventList", eventList.getData());
+
+        return "all-events";
     }
 
     @PostMapping("/add-user")
@@ -69,39 +100,7 @@ public class MainController {
         return "redirect:/";
     }
 
-    @GetMapping("/all-events")
-    public String displayAllEvents(Model model, HttpSession session) {
-        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-        if (currentUser == null) {
-            return "redirect:/auth/login";
-        }
-        ServiceResponse<List<Event>> eventList = eventService.getAllEvents();
-        ServiceResponse<List<DepartmentDTO>> deptList = deptService.getAllDepartments();
-
-        model.addAttribute("currentUser", currentUser);
-        model.addAttribute("eventList", eventList.getData());
-        model.addAttribute("deptList", deptList.getData());
-
-        session.setAttribute("eventList", eventList.getData());
-
-        return "all-events";
-    }
-
-    @GetMapping("/schedule-event")
-    public String scheduleEvent(Event event, HttpSession session, Model model) {
-        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-        if (currentUser == null) {
-            return "redirect:/auth/login";
-        }
-        ServiceResponse<List<DepartmentDTO>> deptList = deptService.getAllDepartments();
-
-        model.addAttribute("currentUser", currentUser);
-        model.addAttribute("deptList", deptList.getData());
-        return "schedule-event";
-    }
-
-    @RequestMapping(value = {"/schedule-event", "/schedule-event/{event-id}"},
-            method = RequestMethod.POST)
+    @PostMapping(value = {"/schedule-event", "/schedule-event/{event-id}"})
     public String scheduleEvent(@PathVariable(value = "event-id", required = false) Long eventId,
             Event event, HttpSession session) {
         UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
@@ -125,7 +124,6 @@ public class MainController {
             return "redirect:/all-events";
         }
 
-        System.out.println(response.getData().getId());
         redirectAttr.addFlashAttribute("event", response.getData());
         return "redirect:/schedule-event";
     }
