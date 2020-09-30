@@ -22,12 +22,12 @@ public class AuthController {
     UserService userService;
 
     @GetMapping("login")
-    public String login() {
+    public String showLoginForm() {
         return "login";
     }
 
     @GetMapping("signup")
-    public String signUp(User user) {
+    public String showSignUpForm(User user) {
         return "signup";
     }
 
